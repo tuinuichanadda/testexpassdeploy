@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "build": "dist && tsc",
+    "build": "npx tsc",
     "dev": "npx nodemon --exec tsx src/index.ts"
   },
   "keywords": [],
