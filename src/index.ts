@@ -1,6 +1,6 @@
 import express from "express";
 // import morgan from 'morgan';
-import router from "./routes/studentRoutes";
+import router from "./routes/studentRoutes.js";
 
 const app: any = express();
 //Middleware
