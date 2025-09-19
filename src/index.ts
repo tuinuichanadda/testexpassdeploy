@@ -10,5 +10,4 @@ app.get('/', (req: Request, res: Response) => {
   })
 })
 
-// ✅ ใช้ export default
 export default app;
