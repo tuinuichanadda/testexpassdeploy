@@ -1,4 +1,4 @@
-import express from "express";
+import express, {type Request, type Response} from "express";
 // import morgan from 'morgan';
 import router from "./routes/studentRoutes.js";
 
@@ -8,6 +8,16 @@ app.use(express.json());//ถ้าไม่ใส่ middleware นี้ req.b
 // app.use(morgan('dev'));// ใช้ morgan ในโหมด "dev" (แสดง log แบบสั้นและมีสี)
 
 app.use("/api/v2/students", router);
+
+app.get("/me", (req: Request, res: Response) => {
+  return res.status(200).json({
+    studentId: "650610001",
+    firstName: "Matt",
+    lastName: "Damon",
+    program: "CPE",
+    section: "001"
+  });
+});
 
 app.listen(3000, () =>
   console.log("🚀 Server running on http://localhost:3000")
