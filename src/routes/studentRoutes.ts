@@ -6,11 +6,11 @@ const studentsRouter = Router();
 // Params URL เหมาะกับ ID มากก่วา
 studentsRouter.get("/:studentId", async (req: Request, res: Response, next:Function) => {
   try {
-      const program = req.params.program;
+      const studentId = req.params.studentId as string | null;
       let filtered = students;
-        if (program !== null) {
-            filtered = filtered.filter((std:Student) => std.program === program);
-            return  res.send(filtered).json;
+        if (studentId !== null) {
+            filtered = filtered.filter((std:Student) => {return std.studentId === studentId});
+            res.send(filtered).json;
         }
   } catch (err) {
     next(err);

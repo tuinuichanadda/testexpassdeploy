@@ -31,7 +31,6 @@ router.get("/:courseId", async (req: Request, res: Response, next:Function) => {
       console.log(courseId);
         if (courseId !== undefined) {
             let filtered = courses.filter((course:Course) =>{return course.courseId === courseId});
-            console.log(filtered);
             res.send(filtered).json;
             //res.json(filtered);
         }
