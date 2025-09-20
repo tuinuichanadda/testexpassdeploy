@@ -8,7 +8,7 @@ const app: any = express();
 app.use(express.json());//ถ้าไม่ใส่ middleware นี้ req.body จะ ไม่ถูก parse
 app.use(morgan('dev'));// ใช้ morgan ในโหมด "dev" (แสดง log แบบสั้นและมีสี)
 
-app.use("/api/v1/students", studentRoutes);
+app.use("/api/v2/students", studentRoutes);
 app.use("/api/v2/courses", courseRoutes);
 
 app.get("/me", (req: Request, res: Response) => {
