@@ -13,9 +13,9 @@ app.use("/api/v2/courses", courseRoutes);
 
 app.get("/me", (req: Request, res: Response) => {
   return res.status(200).json({
-    studentId: "650610001",
-    firstName: "Matt",
-    lastName: "Damon",
+    studentId: "66062039",
+    firstName: "chanadda",
+    lastName: "thanyaratthanon",
     program: "CPE",
     section: "001"
   });
