@@ -61,8 +61,8 @@ router.post("/", async(req: Request, res: Response,next:Function) => {
       }
 
     const newCouse = courses.push(body);
-      return res.json(newCouse);
-      // return res.json({ ok: true, message: "successfuly" });
+      //return res.json(newCouse);
+    return res.json({ ok: true, message: "successfuly", newcouse: courses[newCouse - 1] });
   } catch (err) {
     next(err);
   }
