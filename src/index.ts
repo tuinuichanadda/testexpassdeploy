@@ -1,13 +1,15 @@
 import express, {type Request, type Response} from "express";
-// import morgan from 'morgan';
-import router from "./routes/studentRoutes.js";
+import morgan from 'morgan';
+import studentRoutes from "./routes/studentRoutes.js";
+import courseRoutes from "./routes/courseRoutes.js";
 
 const app: any = express();
 //Middleware
 app.use(express.json());//ถ้าไม่ใส่ middleware นี้ req.body จะ ไม่ถูก parse
-// app.use(morgan('dev'));// ใช้ morgan ในโหมด "dev" (แสดง log แบบสั้นและมีสี)
+app.use(morgan('dev'));// ใช้ morgan ในโหมด "dev" (แสดง log แบบสั้นและมีสี)
 
-app.use("/api/v2/students", router);
+app.use("/api/v1/students", studentRoutes);
+app.use("/api/v2/courses", courseRoutes);
 
 app.get("/me", (req: Request, res: Response) => {
   return res.status(200).json({

@@ -5,14 +5,12 @@ export let students: Student[] = [
       firstName: "Matt",
       lastName: "Damon",
       program: "CPE",
-      programId: 101
     },
     {
       studentId: "650610002",
       firstName: "Cillian",
       lastName: "Murphy",
       program: "CPE",
-      programId: 101,
       courses: [261207, 261497]
     },
     {
@@ -20,7 +18,6 @@ export let students: Student[] = [
       firstName: "Emily",
       lastName: "Blunt",
       program: "ISNE",
-      programId: 102,
       courses: [269101, 261497]
     },
   ]
