@@ -110,7 +110,7 @@ router.delete("/", async (req: Request, res: Response, next: Function) => {
     if (!parseResult.success) {
       return res.status(400).json({
         ok: false,
-        message: parseResult.data,
+        message: parseResult.error,
       });
     }
 
