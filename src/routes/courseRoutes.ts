@@ -67,22 +67,36 @@ router.post("/", async(req: Request, res: Response,next:Function) => {
       if (!result.success) {
         return res.status(400).json({
           message: "Validation failed",
-          errors: result.error
+          errors: result.error.issues[0]?.message,
         });
       }
       //check duplicate course id
       const foundDupe = courses.find((couses:Course) => couses.courseId === req.body.courseId);
       if (foundDupe) {
-        return res.status(400).json( 
-          { ok: false, message: "Course Id already exists" }, //กำหนด error เอง เช่น ok:false
-        );
+        return res.status(409).json({ 
+            success: false,
+            message: "Course Id already exists" 
+          });
       }
 
-    const newCouse = courses.push(body);
+    const newCouse = body;
+    courses.push(body);
+    // add response header 'Link'
+    res.set("Link", `/courses/${newCouse.courseId}`);
+
       //return res.json(newCouse);
-    return res.json({ ok: true, message: "successfuly", newcouse: courses[newCouse - 1] });
+    return res.status(201).json({
+      success: true,
+      message: `Course ${newCouse.courseId} has been added successfully`,
+      data: newCouse,
+    });
+    // return res.json({ ok: true, message: "successfuly", newcouse: courses[newCouse - 1] });
   } catch (err) {
-    next(err);
+     return res.status(500).json({
+      success: false,
+      message: "Somthing is wrong, please try again",
+      error: err,
+    });
   }
 });
 
@@ -94,8 +108,9 @@ router.put("/", async(req: Request, res: Response,next:Function) => {
       if (parseResult.success === false) {
     return res.status(400).json(
       {
-        ok: false,
-        message: parseResult.error,
+        success: false,
+        message: "Validation failed",
+        errors:  parseResult.error.issues[0]?.message,
       },
     );
   }
@@ -104,18 +119,26 @@ router.put("/", async(req: Request, res: Response,next:Function) => {
     (std) => std.courseId === body.courseId
   );
   if (foundIndex === -1) {
-    return res.status(400).json(
-      {
-        ok: false,
-        message: "Course Id does not exist",
-      }
-    );
+     return res.status(404).json({
+        success: false,
+        message: "Course Id does not exists",
+      });
   }
 
   courses[foundIndex] = { ...courses[foundIndex], ...body };
-  return res.json({ ok: true, course: courses[foundIndex] });
+  res.set("Link", `/courses/${body.courseId}`);
+   return res.json({    
+      success: true,
+      message: `course ${body.courseId} has been updated successfully`,
+      data: courses[foundIndex]
+    });
+
   }catch(err){
-   next(err);
+   return res.status(500).json({
+      success: false,
+      message: "Somthing is wrong, please try again",
+      error: err,
+    });
   }
 });
 
@@ -127,8 +150,9 @@ router.delete("/", async (req: Request, res: Response, next: Function) => {
     const parseResult = zCourseDeleteBody.safeParse(body);
     if (!parseResult.success) {
       return res.status(400).json({
-        ok: false,
-        message: parseResult.error,
+        success: false,
+        message: "Validation failed",
+        error: parseResult.error.issues[0]?.message,
       });
     }
 
@@ -138,21 +162,25 @@ router.delete("/", async (req: Request, res: Response, next: Function) => {
     const courseToDelete = courses.find(c => c.courseId === courseId);
     if (!courseToDelete) {
       return res.status(404).json({
-        ok: false,
-        message: "Course Id does not exist",
+         success: false,
+         message: "Course Id does not exist",
       });
     }
     // ลบ course ออกจาก array
     const result = courses.filter(c => c.courseId !== courseId);
 
-    return res.json({
-      ok: true,
-      message: "Course deleted successfully",
-      deletedCourse: courseToDelete,
+    return res.status(200).json({
+      success: true,
+      message: `Course ${body.courseId} has been deleted successfully`,
+      data: courseToDelete,
     });
 
   } catch (err) {
-    next(err);
+     return res.status(500).json({
+      success: false,
+      message: "Somthing is wrong, please try again",
+      error: err,
+    });
   }
 });
 
