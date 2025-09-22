@@ -13,17 +13,19 @@ app.use("/api/v2/courses", courseRoutes);
 
 app.get("/me", (req: Request, res: Response) => {
   return res.status(200).json({
-    studentId: "66062039",
-    firstName: "chanadda",
-    lastName: "thanyaratthanon",
-    program: "CPE",
-    section: "001"
+    success: true,
+    message: "Student Information",
+    data: {
+      studentId: "66062039",
+      firstName: "chanadda",
+      lastName: "thanyaratthanon",
+      program: "CPE",
+      section: "001"
+    }
   });
 });
 
 app.listen(3000, () =>
   console.log("🚀 Server running on http://localhost:3000")
 );
-
-
 export default app;

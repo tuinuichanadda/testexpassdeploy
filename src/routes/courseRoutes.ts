@@ -1,6 +1,6 @@
 import {Router, type Request, type Response } from "express";
 import { students, courses } from "../db/db.js";
-import { zCoursePostBody, zCoursePutBody,zCourseDeleteBody } from "../schemas/courseSchema.js"
+import { zCoursePostBody, zCoursePutBody,zCourseDeleteBody, zCourseId } from "../schemas/courseSchema.js"
 import { type Course, type Student } from "../libs/types.js"
 const router: Router = Router();
 
@@ -27,13 +27,31 @@ router.get("/", (req: Request, res: Response) => {
 // Params URL 
 router.get("/:courseId", async (req: Request, res: Response, next:Function) => {
   try {
-      const courseId =  Number(req.params.courseId);
-      console.log(courseId);
-        if (courseId !== undefined) {
-            let filtered = courses.filter((course:Course) =>{return course.courseId === courseId});
-            res.send(filtered).json;
-            //res.json(filtered);
-        }
+    const courseId =  Number(req.params.courseId);
+    const parseResult = zCourseId.safeParse(courseId);
+    
+    if (!parseResult.success) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: parseResult.error.issues[0]?.message,
+      });
+    }
+
+    const foundIndex = courses.findIndex( (c: Course) => c.courseId === courseId );
+    
+    if (foundIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: "Course does not exists",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Get course ${courseId} successfully`,
+      data: courses[foundIndex]
+    });
+      
   } catch (err) {
     next(err);
   }
