@@ -11,6 +11,12 @@ app.use(morgan('dev'));// ใช้ morgan ในโหมด "dev" (แสด�
 app.use("/api/v2/students", studentRoutes);
 app.use("/api/v2/courses", courseRoutes);
 
+app.get("/", (req: Request, res: Response) => {
+  return res.status(200).json({
+    success: true,
+    message: "lab 15 API service successfully"
+  });
+});
 app.get("/me", (req: Request, res: Response) => {
   return res.status(200).json({
     success: true,
